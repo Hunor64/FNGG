@@ -21,3 +21,6 @@ Supports all cosmetic types, including:
 - Dynamic (V-Bucks) Bundles
 - Built-in Emotes
 - Banners
+
+## Based on
+[Fecooo/FNGGLocker](https://github.com/Fecooo/FNGGLocker)
