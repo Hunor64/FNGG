@@ -9,22 +9,25 @@ namespace FNGGLocker
 {
     class Program
     {
+        #region Constants
         private static readonly string SWITCH_TOKEN = "OThmN2U0MmMyZTNhNGY4NmE3NGViNDNmYmI0MWVkMzk6MGEyNDQ5YTItMDAxYS00NTFlLWFmZWMtM2U4MTI5MDFjNGQ3";
         private static readonly List<string> ACCEPTED_COSMETIC_TYPES = new List<string>
-    {
-        "AthenaCharacter", "AthenaDance", "AthenaPickaxe", "AthenaBackpack", "AthenaGlider",
-        "AthenaItemWrap", "AthenaLoadingScreen", "AthenaMusicPack", "AthenaSkyDiveContrail",
-        "BannerToken", "HomebaseBannerIcon", "SparksSong", "SparksGuitar", "SparksBass",
-        "SparksDrums", "SparksKeyboard", "SparksMicrophone", "SparksAura", "VehicleCosmetics_Body",
-        "VehicleCosmetics_Skin", "VehicleCosmetics_Wheel", "VehicleCosmetics_DriftTrail",
-        "VehicleCosmetics_Booster", "JunoBuildingProp", "JunoBuildingSet", "CosmeticShoes"
-    };
+            {
+                "AthenaCharacter", "AthenaDance", "AthenaPickaxe", "AthenaBackpack", "AthenaGlider",
+                "AthenaItemWrap", "AthenaLoadingScreen", "AthenaMusicPack", "AthenaSkyDiveContrail",
+                "BannerToken", "HomebaseBannerIcon", "SparksSong", "SparksGuitar", "SparksBass",
+                "SparksDrums", "SparksKeyboard", "SparksMicrophone", "SparksAura", "VehicleCosmetics_Body",
+                "VehicleCosmetics_Skin", "VehicleCosmetics_Wheel", "VehicleCosmetics_DriftTrail",
+                "VehicleCosmetics_Booster", "JunoBuildingProp", "JunoBuildingSet", "CosmeticShoes"
+            };
+        #endregion
 
         static async Task Main(string[] args)
         {
             await MainAsync();
         }
 
+        #region MainAsync Method
         private static async Task MainAsync()
         {
             using (var httpClient = new HttpClient())
@@ -88,7 +91,9 @@ namespace FNGGLocker
                 //await File.WriteAllTextAsync("locker.txt", $"https://fortnite.gg/my-locker?items={encoded}");
             }
         }
+        #endregion
 
+        #region Helper Methods
         private static void SetUserDetails(Dictionary<string, object> authData)
         {
             User.AccountId = authData["account_id"].ToString();
@@ -162,15 +167,17 @@ namespace FNGGLocker
         {
             return ints.Select((e, index) => index > 0 ? (e - ints[index - 1]).ToString() : e.ToString()).ToList();
         }
+        #endregion
 
+        #region HTTP Methods
         private static async Task<string> GetAccessToken(HttpClient httpClient)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "https://account-public-service-prod.ol.epicgames.com/account/api/oauth/token");
             request.Headers.Authorization = new AuthenticationHeaderValue("basic", SWITCH_TOKEN);
             request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
-        {
-            { "grant_type", "client_credentials" }
-        });
+                {
+                    { "grant_type", "client_credentials" }
+                });
 
             var response = await httpClient.SendAsync(request);
             var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(await response.Content.ReadAsStringAsync());
@@ -195,10 +202,10 @@ namespace FNGGLocker
                 var request = new HttpRequestMessage(HttpMethod.Post, "https://account-public-service-prod03.ol.epicgames.com/account/api/oauth/token");
                 request.Headers.Authorization = new AuthenticationHeaderValue("basic", SWITCH_TOKEN);
                 request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
-            {
-                { "grant_type", "device_code" },
-                { "device_code", code }
-            });
+                    {
+                        { "grant_type", "device_code" },
+                        { "device_code", code }
+                    });
 
                 var response = await httpClient.SendAsync(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -265,7 +272,9 @@ namespace FNGGLocker
                 return null;
             }
         }
+        #endregion
 
+        #region Compression Methods
         private static byte[] CompressData(string data)
         {
             var inputBytes = Encoding.UTF8.GetBytes(data);
@@ -288,5 +297,6 @@ namespace FNGGLocker
             string base64 = Convert.ToBase64String(input).TrimEnd('=');
             return base64.Replace('+', '-').Replace('/', '_');
         }
+        #endregion
     }
 }
