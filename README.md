@@ -4,7 +4,7 @@ Generate your locker on [Fortnite.GG](https://fortnite.gg) from your athena and 
 
 ## Usage
 
-- Download `.exe` or `.dmg` from latest release
+- Download `.exe` or `.app` from latest release
 - Run the executable.
 - Follow the instructions.
 
