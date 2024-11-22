@@ -10,6 +10,6 @@ namespace FNGG
     {
         public static string AccountId = "";
         public static string UserName = "";
-        public static string AccessToken = "";
+        public static string AccessToken = ""; 
     }
 }
